@@ -1,9 +1,9 @@
 import express from 'express';
 import routerAPI from './routes.js';
 
-// dotenv
-import dotenv from 'dotenv';
-dotenv.config();
+import connectToDB from './db.js';
+
+connectToDB();
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));

@@ -1,14 +1,4 @@
-import faker from 'faker';
-import db from 'mongoose'
-
 import model from './usersModel.js';
-
-// dotenv
-import dotenv from 'dotenv';
-dotenv.config();
-
-db.Promise = global.Promise;
-db.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.PASS}@cluster0.3bgp9.mongodb.net/test`, { useNewUrlParser: true, useUnifiedTopology: true })
 
 export default class UsersService {
     constructor() {

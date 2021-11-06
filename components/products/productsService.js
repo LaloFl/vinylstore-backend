@@ -1,17 +1,4 @@
-import faker from 'faker';
-import db from 'mongoose'
-
-// dotenv
-import dotenv from 'dotenv';
-dotenv.config();
-
 import model from './productsModel.js';
-
-db.Promise = global.Promise;
-db.connect(
-    `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASS}@cluster0.3bgp9.mongodb.net/test`, 
-    { useNewUrlParser: true, useUnifiedTopology: true }
-)
 
 export default class ProductsService {
     async findAll(query) {
