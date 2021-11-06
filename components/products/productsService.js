@@ -9,7 +9,7 @@ import model from './productsModel.js';
 
 db.Promise = global.Promise;
 db.connect(
-    `mongodb+srv://admin:${process.env.PASS}@cluster0.3bgp9.mongodb.net/test`, 
+    `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASS}@cluster0.3bgp9.mongodb.net/test`, 
     { useNewUrlParser: true, useUnifiedTopology: true }
 )
 
