@@ -15,8 +15,8 @@ export default class UsersService {
         this.users = [];
     }
 
-    async findAll() {
-        const foundUsers = await model.find();
+    async findAll(query) {
+        const foundUsers = await model.find(query);
         return foundUsers;
     }
 
@@ -31,23 +31,18 @@ export default class UsersService {
         return newUser
     }
 
-    update(id, user) {
-        const index = this.users.findIndex(u => u.id === id);
-        this.users[index] = user;
-        return user;
-    }
-
-    delete(id) {
-        const index = this.users.findIndex(u => u.id === id);
-        this.users.splice(index, 1);
-    }
-
-    patch(id, user) {
-        const index = this.users.findIndex(u => u.id === id);
-        this.users[index] = { 
-            ...this.users[index], 
-            ...user 
+    async delete(id) {
+        const foundUser = await model.findById(id);
+        foundUser.remove();
+        return {
+            message: 'User deleted',
+            user: foundUser
         };
-        return this.users[index];
+    }
+
+    async patch(id, user) {
+        const foundUser = await model.findById(id);
+        Object.assign(foundUser, user).save();
+        return foundUser;
     }
 }
