@@ -36,6 +36,7 @@ export default class UsersService {
     async patch(id, user) {
         const foundUser = await model.findById(id);
         Object.assign(foundUser, user).save();
+        foundUser.updated_at = new Date().toUTCString();
         return {
             message: 'User updated',
             user: foundUser

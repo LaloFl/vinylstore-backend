@@ -32,6 +32,7 @@ export default class ProductsService {
     async patch(id, product) {
         const foundProduct = await model.findById(id);
         Object.assign(foundProduct, product).save();
+        foundProduct.updated_at = new Date().toUTCString();
         return {
             message: 'Product updated',
             product: foundProduct

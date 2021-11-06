@@ -6,9 +6,8 @@ const usersSchema = new Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     role: { type: String, required: true },
-    created_at: { type: Date, default: Date.now },
-    updated_at: { type: Date, default: Date.now },
-    deleted_at: { type: Date, default: null },
+    created_at: { type: Date, default: new Date().toUTCString() },
+    updated_at: { type: Date, default: new Date().toUTCString() },
     enabled: { type: Boolean, default: true }
 });
 
