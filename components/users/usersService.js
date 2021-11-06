@@ -28,7 +28,10 @@ export default class UsersService {
     create(user) {
         const newUser = new model(user);
         newUser.save();
-        return newUser
+        return {
+            message: 'User created',
+            user: newUser
+        }
     }
 
     async delete(id) {
@@ -43,6 +46,9 @@ export default class UsersService {
     async patch(id, user) {
         const foundUser = await model.findById(id);
         Object.assign(foundUser, user).save();
-        return foundUser;
+        return {
+            message: 'User updated',
+            user: foundUser
+        };
     }
-}
+}  

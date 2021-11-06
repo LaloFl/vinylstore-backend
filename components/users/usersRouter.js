@@ -8,13 +8,13 @@ const router = Router();
 
 router.get('/', (req, res) => {
   service.findAll(req.query)
-  .then(users => {res.json(users);})
+  .then(products => {res.json(products);})
   .catch(err => {res.status(500).json(err);});  
 });
 
 router.get('/:id', (req, res) => {
   service.findById(req.params.id)
-  .then(user => {res.json(user);})
+  .then(product => {res.json(product);})
   .catch(err => {res.status(500).json(err);});
 });
 
@@ -24,13 +24,13 @@ router.post('/', (req, res) => {
 
 router.patch('/:id', (req, res) => {
   service.patch(req.params.id, req.body)
-  .then(user => {res.json(user);})
+  .then(product => {res.json(product);})
   .catch(err => {res.status(500).json(err);});
 })
 
 router.delete('/:id', (req, res) => {
   service.delete(req.params.id)
-  .then(user => {res.json(user);})
+  .then(product => {res.json(product);})
   .catch(err => {res.status(500).json(err);});
 })
 

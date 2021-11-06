@@ -1,38 +1,37 @@
-import express from 'express';
+import {Router} from 'express';
 
+// services
 import ProductsService from './productsService.js';
 const service = new ProductsService();
 
-const router = express.Router();
+const router = Router();
 
 router.get('/', (req, res) => {
-  res.json(service.findAll());
+  service.findAll(req.query)
+  .then(users => {res.json(users);})
+  .catch(err => {res.status(500).json(err);});  
 });
+
 router.get('/:id', (req, res) => {
-  const id = req.params.id;
-  res.json(service.findById(id));
+  service.findById(req.params.id)
+  .then(user => {res.json(user);})
+  .catch(err => {res.status(500).json(err);});
 });
 
 router.post('/', (req, res) => {
-  const product = req.body;
-  res.json(service.create(product));
-});
-
-router.put('/:id', (req, res) => {
-  const id = req.params.id;
-  const product = req.body;
-  res.json(service.update(id, product));
-});
-
-router.delete('/:id', (req, res) => {
-  const id = req.params.id;
-  res.json(service.delete(id));
-});
+  res.json(service.create(req.body))
+})
 
 router.patch('/:id', (req, res) => {
-  const id = req.params.id;
-  const product = req.body;
-  res.json(service.patch(id, product));
+  service.patch(req.params.id, req.body)
+  .then(user => {res.json(user);})
+  .catch(err => {res.status(500).json(err);});
+})
+
+router.delete('/:id', (req, res) => {
+  service.delete(req.params.id)
+  .then(user => {res.json(user);})
+  .catch(err => {res.status(500).json(err);});
 })
 
 export default router;

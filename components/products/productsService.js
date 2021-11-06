@@ -5,7 +5,7 @@ import db from 'mongoose'
 import dotenv from 'dotenv';
 dotenv.config();
 
-import productsModel from './productsModel.js';
+import model from './productsModel.js';
 
 db.Promise = global.Promise;
 db.connect(
@@ -14,53 +14,40 @@ db.connect(
 )
 
 export default class ProductsService {
-    constructor() {
-        this.products = [];
-        this.generate(4);
+    async findAll(query) {
+        const foundProducts = await model.find(query);
+        return foundProducts;
     }
 
-    generate(count) {
-        for(let i = 0; i < count; i++) { 
-            this.products.push({
-              id: faker.datatype.uuid(),
-              name: faker.commerce.productName(),
-              price: faker.commerce.price(),
-              image: faker.image.imageUrl()
-            });
-        }
-    }
-
-    async findAll() {
-        const foundMessages = await productsModel.find();
-        return foundMessages;
-    }
-
-    findById(id) {
-        return this.products.find(product => product.id === id);
+    async findById(id) {
+        const foundProduct = await model.findById(id);
+        return foundProduct;
     }
 
     create(product) {
-        const newProduct = new productsModel(product);
-        return newProduct.save();
+        const newProduct = new model(product);
+        newProduct.save();
+        return {
+            message: 'Product created',
+            product: newProduct
+        }
     }
 
-    delete(id) {
-        const index = this.products.findIndex(p => p.id === id);
-        this.products.splice(index, 1);
-    }
-
-    update(id, product) {
-        const index = this.products.findIndex(p => p.id === id);
-        this.products[index] = product;
-        return this.products[index];
-    }
-
-    patch(id, product) {
-        const index = this.products.findIndex(p => p.id === id);
-        this.products[index] = {
-            ...this.products[index],
-            ...product
+    async delete(id) {
+        const foundProduct = await model.findById(id);
+        foundProduct.remove();
+        return {
+            message: 'Product deleted',
+            product: foundProduct
         };
-        return this.products[index];
+    }
+
+    async patch(id, product) {
+        const foundProduct = await model.findById(id);
+        Object.assign(foundProduct, product).save();
+        return {
+            message: 'Product updated',
+            product: foundProduct
+        };
     }
 }
