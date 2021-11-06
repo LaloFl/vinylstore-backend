@@ -1,7 +1,7 @@
 import express from 'express';
 
-import usersRouter from './usersRouter.js';
-import productsRouter from './productsRouter.js';
+import usersRouter from './components/users/usersRouter.js';
+import productsRouter from './components/products/productsRouter.js';
 
 export default function routerAPI(app) {
     const router = express.Router();

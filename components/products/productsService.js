@@ -1,4 +1,17 @@
 import faker from 'faker';
+import db from 'mongoose'
+
+// dotenv
+import dotenv from 'dotenv';
+dotenv.config();
+
+import productsModel from './productsModel.js';
+
+db.Promise = global.Promise;
+db.connect(
+    `mongodb+srv://admin:${process.env.PASS}@cluster0.3bgp9.mongodb.net/test`, 
+    { useNewUrlParser: true, useUnifiedTopology: true }
+)
 
 export default class ProductsService {
     constructor() {
@@ -17,8 +30,9 @@ export default class ProductsService {
         }
     }
 
-    findAll() {
-        return this.products;
+    async findAll() {
+        const foundMessages = await productsModel.find();
+        return foundMessages;
     }
 
     findById(id) {
@@ -26,7 +40,8 @@ export default class ProductsService {
     }
 
     create(product) {
-        this.products.push(product);
+        const newProduct = new productsModel(product);
+        return newProduct.save();
     }
 
     delete(id) {
@@ -37,6 +52,15 @@ export default class ProductsService {
     update(id, product) {
         const index = this.products.findIndex(p => p.id === id);
         this.products[index] = product;
+        return this.products[index];
+    }
+
+    patch(id, product) {
+        const index = this.products.findIndex(p => p.id === id);
+        this.products[index] = {
+            ...this.products[index],
+            ...product
+        };
         return this.products[index];
     }
 }
