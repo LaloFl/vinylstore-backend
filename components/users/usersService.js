@@ -1,14 +1,14 @@
 import faker from 'faker';
 import db from 'mongoose'
 
-import usersModel from './usersModel.js';
+import model from './usersModel.js';
 
 // dotenv
 import dotenv from 'dotenv';
 dotenv.config();
 
+db.Promise = global.Promise;
 db.connect(`mongodb+srv://admin:${process.env.PASS}@cluster0.3bgp9.mongodb.net/test`, { useNewUrlParser: true, useUnifiedTopology: true })
-
 
 export default class UsersService {
     constructor() {
@@ -16,17 +16,19 @@ export default class UsersService {
     }
 
     async findAll() {
-        const users = await usersModel.find();
-        return users;
+        const foundUsers = await model.find();
+        return foundUsers;
     }
 
-    findOne(id) {
-        return this.users.find(user => user.id === id);
+    async findById(id) {
+        const foundUser = await model.findById(id);
+        return foundUser;
     }
 
     create(user) {
-        const newUser = new usersModel(user);
-        return newUser.save();
+        const newUser = new model(user);
+        newUser.save();
+        return newUser
     }
 
     update(id, user) {

@@ -7,7 +7,19 @@ const service = new UsersService();
 const router = Router();
 
 router.get('/', (req, res) => {
-  res.json(service.findAll());
+  service.findAll().then(users => {
+    res.json(users);
+  }).catch(err => {
+    res.status(500).json(err);
+  });
+});
+
+router.get('/:id', (req, res) => {
+  service.findById(req.params.id).then(user => {
+    res.json(user);
+  }).catch(err => {
+    res.status(500).json(err);
+  });
 });
 
 router.post('/', (req, res) => {
